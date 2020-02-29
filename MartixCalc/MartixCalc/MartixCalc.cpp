@@ -4,12 +4,15 @@
 using namespace std;
 
 //find determinant - next
-//matrix multiplication - kk
-//left side *num
-//overload *=
-//overload -
+//triangular view - next
+//transpos - kk (0.3)
+//interface - next
+//matrix multiplication - kk (0.1)
+//left side *num - kk in meaning of use "=*" (0.3)
+//overload "*=" - kk (0.3)
+//overload "-" - kk (0.3)
 //cin space change
-//functions preload
+//functions preload - kk (0.3)
 class aMatrix {
 private: 
 	string err_type = "Matrices can't be stacked";
@@ -53,7 +56,7 @@ public:
 	void set_elem()
 	{
 		for (int d = 0, c = 0, c1 = 0; d < SIZE_C * SIZE_L; c++, d++) {
-			if (c >= SIZE_L) { c = 0; c1++; };
+			if (c >= SIZE_L) { c = 0; c1++; cout << endl; };
 			int temp;
 			cin >> temp;
 			arr[c1][c] = temp;
@@ -67,6 +70,17 @@ public:
 			temp = rand() % 10;
 			arr[c1][c] = temp;
 		};
+	}
+	aMatrix transpos() 
+	{
+		unsigned int n = SIZE_C;
+		unsigned int m = SIZE_L;
+		aMatrix temp(n, m);
+		for (int d = 0, c = 0, c1 = 0; d < SIZE_C * SIZE_L; c++, d++) {
+			if (c >= SIZE_L) { c = 0; c1++; };
+			temp.arr[c][c1] = arr[c1][c];
+		};
+		return temp;
 	}
 	aMatrix operator+ (aMatrix buf)
 	{
@@ -84,7 +98,32 @@ public:
 			return temp; //empty matrix
 		}
 	}
-	aMatrix operator* (int alp) //fix only left side num
+	aMatrix operator- (aMatrix buf)
+	{
+		aMatrix temp(SIZE_L, SIZE_C);
+		if (SIZE_C == buf.SIZE_C && SIZE_L == buf.SIZE_L)
+		{
+			for (int d = 0, c = 0, c1 = 0; d < SIZE_C * SIZE_L; c++, d++) {
+				if (c >= SIZE_L) { c = 0; c1++; };
+				temp.arr[c1][c] = arr[c1][c] - buf.arr[c1][c];
+			};
+			return temp;
+		}
+		else {
+			cout << temp.err_type;
+			return temp; //empty matrix
+		}
+	}
+	aMatrix operator*= (int alp) //fix only left side num
+	{
+		aMatrix temp(SIZE_L, SIZE_C);
+		for (int d = 0, c = 0, c1 = 0; d < SIZE_C * SIZE_L; c++, d++) {
+			if (c >= SIZE_L) { c = 0; c1++; };
+			temp.arr[c1][c] = arr[c1][c] * alp;
+		};
+		return temp;
+	}
+	aMatrix operator* (int alp)
 	{
 		aMatrix temp(SIZE_L, SIZE_C);
 		for (int d = 0, c = 0, c1 = 0; d < SIZE_C * SIZE_L; c++, d++) {
@@ -120,22 +159,27 @@ public:
 	}
 };
 
+void functions();
+
 int main() {
 	srand(time(NULL));
-	aMatrix C(2, 2), D(2, 2), G(2, 2), T(2, 2);
+	functions();
+	//test
+	aMatrix C(3, 2), D(2, 2), G(2, 2), T(2, 2);
 	C.set_random_elem();
 	C.get_elem();
 	cout << endl << endl;
-	D.set_random_elem();
-	D.get_elem();
-	cout << endl << "\n";
-	T = C * D;
-	T.get_elem();
-	cout << endl << endl;
-	G = C + D;
+	G = C.transpos();
 	G.get_elem();
-	cout << endl << endl;
-	G = G * 2;
-	G.get_elem();
+	//test
+	/*
+	...interface...
+	*/
 	return 0;
+}
+
+void functions() {
+	cout << "=* for multiplicate on num" << endl;
+	cout << "* for multiplicate on matrix" << endl;
+	cout << "+ or - for plus/minus with matrix" << endl;
 }
