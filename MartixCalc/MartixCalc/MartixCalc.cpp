@@ -6,7 +6,7 @@ using namespace std;
 //find determinant - next
 //triangular view - next
 //transpos - kk (0.3)
-//interface - next
+//interface - kk (0.4)
 //matrix multiplication - kk (0.1)
 //left side *num - kk in meaning of use "=*" (0.3)
 //overload "*=" - kk (0.3)
@@ -165,21 +165,106 @@ int main() {
 	srand(time(NULL));
 	functions();
 	//test
-	aMatrix C(3, 2), D(2, 2), G(2, 2), T(2, 2);
-	C.set_random_elem();
-	C.get_elem();
-	cout << endl << endl;
-	G = C.transpos();
-	G.get_elem();
 	//test
 	/*
 	...interface...
 	*/
+	char k = getchar();
+	while (k != '`') {
+		if (k == '`') {
+			exit;
+		};
+		if (k != '`')
+		{
+			int n, m, n1, m1;
+			cout << "Write n matrix A:" << endl;
+			cin >> n;
+			cout << "Write m matrix A:" << endl;
+			cin >> m;
+			cout << "Write n matrix B:" << endl;
+			cin >> n1;
+			cout << "Write m matrix B:" << endl;
+			cin >> m1;
+			aMatrix A(n, m), B(n1, m1);
+			cout << "Wrirte the elements of A: " << endl << endl;
+			A.set_elem();
+			cout << "Wrirte the elements of B: " << endl << endl;
+			B.set_elem();
+			cout << "Write operation: (*, *=, +, -, T)";
+			char l;
+			cin >> l;
+			if (l == '*') {
+				cout << "Press 1 if A*B or 2 if B*A" << endl;
+				cin >> l;
+				if (l == '1') {
+					aMatrix C(m, n1);
+					C = A * B;
+					C.get_elem();
+					break;
+				}
+				else if (l == '2') {
+					aMatrix C(m, n1);
+					C = B * A;
+					C.get_elem();
+					break;
+				}
+			}
+			if (l == '*=') {
+				cout << "Write the number:" << endl;
+				int alpha;
+				cin >> alpha;
+				cout << "Write A or B:" << endl;
+				cin >> l;
+				if (l == 'A') {
+					aMatrix C(n, m);
+					C *= alpha;
+					C.get_elem();
+					break;
+				}
+				else if (l == 'B') {
+					aMatrix C(n1, m1);
+					C *= alpha;
+					C.get_elem();
+					break;
+				}
+			}
+			if (l == '+') {
+				cout << "Write the number: " << endl;
+				aMatrix C(n, m);
+				C = A + B;
+				C.get_elem();
+				break;
+			}
+			if (l == '-') {
+				cout << "Write the number: " << endl;
+				aMatrix C(n, m);
+				C = A - B;
+				C.get_elem();
+				break;
+			}
+			if (l == 'T') {
+				cout << "Write A or B:" << endl;
+				cin >> l;
+				if (l == 'A' or l == 'a') {
+					A.transpos();
+					A.get_elem();
+					break;
+				}
+				else if (l == 'B' or l =='b') {
+					B.transpos();
+					B.get_elem();
+					break;
+				}
+			}
+			exit;
+		}
+	}
 	return 0;
 }
 
 void functions() {
-	cout << "=* for multiplicate on num" << endl;
+	cout << "*= for multiplicate on num" << endl;
 	cout << "* for multiplicate on matrix" << endl;
 	cout << "+ or - for plus/minus with matrix" << endl;
+	cout << "press ` to exit" << endl;
 }
